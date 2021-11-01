@@ -8,11 +8,11 @@ Vue.use(VueRouter)
 
 let routes = [
   {
-      path: '/',
-      redirect:'/adaptive/course',
-      meta:{
-        title:'ETS'
-      }
+    path: '/',
+    redirect:'/adaptive/course',
+    meta:{
+      title:'ETS'
+    }
   }
 ]
 

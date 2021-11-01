@@ -17,15 +17,11 @@
         <!-- type 筛选 -->
         <el-select multiple v-model="filter.activity_type_ids" class="filter-select" @change="filterType">
           <!-- <el-option label="All type" value="0"></el-option> -->
-          <el-option v-for="(item,key) in types" :key="key" :label="item" :value="key"></el-option>
+          <el-option v-for="(item, key) in types" :key="key" :label="item" :value="key"></el-option>
         </el-select>
         <!-- question_options 筛选 -->
-        <el-select
-          v-model="filter.question_option"
-          class="filter-select"
-          @change="filterQuestionOption"
-        >
-          <el-option v-for="(item,key) in question_options" :key="key" :label="item" :value="key"></el-option>
+        <el-select v-model="filter.question_option" class="filter-select" @change="filterQuestionOption">
+          <el-option v-for="(item, key) in question_options" :key="key" :label="item" :value="key"></el-option>
         </el-select>
         <!-- 添加 -->
         <!-- <el-dropdown trigger="hover" class="fr" @command="commandAddType">
@@ -37,9 +33,7 @@
             <el-dropdown-item v-for="(item,key) in types" :key="key" :command="key">{{ item }}</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown> -->
-        <el-button @click="openDialog" type="primary" class="el-dropdown-link fr">
-          + New
-        </el-button>
+        <el-button @click="openDialog" type="primary" class="el-dropdown-link fr"> + New </el-button>
         <!-- id 筛选 -->
         <el-input
           type="text"
@@ -51,27 +45,18 @@
           <i class="el-icon-search el-input__icon" slot="suffix"></i>
         </el-input>
       </div>
-      <el-table
-        :data="list"
-        :header-cell-style="rowClass"
-        style="margin:32px 0;"
-        v-loading="loading"
-      >
+      <el-table :data="list" :header-cell-style="rowClass" style="margin: 32px 0" v-loading="loading">
         <el-table-column label="ActivityID" prop="id" width="120px"></el-table-column>
         <el-table-column label="Name" prop="name" width="120px"></el-table-column>
         <el-table-column label="Type" prop="type_content_list" width="200px">
           <template slot-scope="scope">
-            <span class="type-span" v-for="val in scope.row.type_content_list" :key="val">{{val}}/</span>
+            <span class="type-span" v-for="val in scope.row.type_content_list" :key="val">{{ val }}/</span>
           </template>
         </el-table-column>
         <el-table-column label="Belonging">
           <template slot-scope="scope">
             <div v-if="scope.row.location.length">
-              <p
-                class="list-belong"
-                v-for="(location,index) in scope.row.location"
-                :key="location.id"
-              >
+              <p class="list-belong" v-for="(location, index) in scope.row.location" :key="location.id">
                 {{ curLevel }}
                 <span v-if="location.courses[0]">/{{ location.courses[0].name }}</span>
                 <span v-if="location.en_name">/{{ location.en_name }}</span>
@@ -91,7 +76,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        style="margin:20px 0"
+        style="margin: 20px 0"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="filter.page"
@@ -104,38 +89,38 @@
   </div>
 </template>
 <script>
-import api from "@/api";
-import { async } from "q";
+import api from '@/api';
+import { async } from 'q';
 export default {
-  name: "activity",
+  name: 'activity',
   data() {
     return {
       list: [], // activity 列表数据
       types: {}, // type 数据
       question_options: {},
       sheets: [],
-      curLevel: "",
-      levelSelect: "1",
-      searchId:'',
+      curLevel: '',
+      levelSelect: '1',
+      searchId: '',
       filter: {
         // 筛选数据
         mode: 1,
-        course_id: "0", // course id
-        sheet_id: "0", // unit id
+        course_id: '0', // course id
+        sheet_id: '0', // unit id
         activity_type_ids: [], // activity的type类型
         // activity_type: "0", // activity的type类型
-        question_option: "0", // 题目数量选项值
-        activity_id: "", // id
-        cate_id: "0", // all units  1 offical 2test
+        question_option: '0', // 题目数量选项值
+        activity_id: '', // id
+        cate_id: '0', // all units  1 offical 2test
         page: 1,
         limit: 10,
         has_location: 1
       },
       defaultData: {
-        value: "id",
-        label: "name",
-        children: "cates",
-        expandTrigger: "hover"
+        value: 'id',
+        label: 'name',
+        children: 'cates',
+        expandTrigger: 'hover'
       },
       courseTree: [],
       courseUnits: [0, 0],
@@ -153,10 +138,7 @@ export default {
      * 获取activity列表
      */
     async getActivityList() {
-      let { result, status, message } = await this.$http._get(
-        api.activityList,
-        this.filter
-      );
+      let { result, status, message } = await this.$http._get(api.activityList, this.filter);
       if (status == 200) {
         this.loading = false;
         let orgingList = result.activites.list;
@@ -169,11 +151,11 @@ export default {
           sheet_activites.push(el.sheet_activites);
         });
         sheet_activites.forEach((el, index) => {
-          orgingList[index]["location"] = [];
+          orgingList[index]['location'] = [];
           el.forEach((s, i) => {
             sheets.forEach((sheet, sheetIndex) => {
               if (s.sheet_id == sheet.id) {
-                orgingList[index]["location"].push(sheet);
+                orgingList[index]['location'].push(sheet);
               }
             });
           });
@@ -181,8 +163,8 @@ export default {
         this.list = orgingList;
       } else {
         this.$message({
-          duration:1000,
-          type: "error",
+          duration: 1000,
+          type: 'error',
           message: message
         });
       }
@@ -201,7 +183,7 @@ export default {
      */
     editActiviry(scope) {
       this.$router.push({
-        name: "activityConfig",
+        name: 'activityConfig',
         query: {
           activity_id: scope.row.id
         }
@@ -212,19 +194,17 @@ export default {
      * course下的unit
      */
     async getCourseTree() {
-      let { result, status, message } = await this.$http._get(
-        api.getCourseTree
-      );
+      let { result, status, message } = await this.$http._get(api.getCourseTree);
       if (status == 200) {
         if (result.courses.length) {
-          result.courses[0]["cates"] = [];
-          result.courses[0]["cates"].push({ id: 0, name: "All units" });
+          result.courses[0]['cates'] = [];
+          result.courses[0]['cates'].push({ id: 0, name: 'All units' });
           this.courseTree = result.courses;
         }
       } else {
         this.$message({
-          duration:1000,
-          type: "error",
+          duration: 1000,
+          type: 'error',
           message: message
         });
       }
@@ -282,49 +262,45 @@ export default {
      * 添加
      */
     openDialog() {
-        this.$prompt('New Activity', {
-          confirmButtonText: 'Add',
-          cancelButtonText: 'Cancel',
-          inputPattern:  /\S/,
-          inputErrorMessage: '内容不能为空',
-          inputPlaceholder:'Activity Name'
-        }).then(({ value }) => {
+      this.$prompt('New Activity', {
+        confirmButtonText: 'Add',
+        cancelButtonText: 'Cancel',
+        inputPattern: /\S/,
+        inputErrorMessage: '内容不能为空',
+        inputPlaceholder: 'Activity Name'
+      })
+        .then(({ value }) => {
           // this.$message({
-            // duration:1000,
+          // duration:1000,
           //   type: 'success',
           //   message: '你的邮箱是: ' + value
           // });
-           this.commandAddType(value)
-        }).catch(() => {});
-      },
+          this.commandAddType(value);
+        })
+        .catch(() => {});
+    },
     /**
      * 删除activity
      */
     async delActivity(scope) {
-      this.$confirm(
-        "Do you mean to delete this activity? This change cannot be recovered.",
-        "Warning",
-        {
-          confirmButtonText: "Delete",
-          cancelButtonText: "Cancel",
-          type: "error"
-        }
-      )
+      this.$confirm('Do you mean to delete this activity? This change cannot be recovered.', 'Warning', {
+        confirmButtonText: 'Delete',
+        cancelButtonText: 'Cancel',
+        type: 'error'
+      })
         .then(async () => {
-          let { result, status, message } = await this.$http._delete(
-            api.delActivity(scope.row.id)
-          );
+          let { result, status, message } = await this.$http._delete(api.delActivity(scope.row.id));
           if (status == 200) {
             this.getActivityList();
             this.$message({
-              duration:1000,
-              type: "success",
-              message: "delete success"
+              duration: 1000,
+              type: 'success',
+              message: 'delete success'
             });
           } else {
             this.$message({
-              duration:1000,
-              type: "error",
+              duration: 1000,
+              type: 'error',
               message: message
             });
           }
@@ -335,16 +311,12 @@ export default {
      * 通过type添加 activity
      */
     async commandAddType(c) {
-      let { result, status, message } = await this.$http._post(
-        api.saveActivity,
-        { mode: 1,
-        name: c }
-      );
+      let { result, status, message } = await this.$http._post(api.saveActivity, { mode: 1, name: c });
       if (status == 200) {
         this.$message({
-          duration:1000,
-          type: "success",
-          message: "add success"
+          duration: 1000,
+          type: 'success',
+          message: 'add success'
         });
         this.getActivityList();
       }
@@ -353,7 +325,7 @@ export default {
      * 表格表头样式
      */
     rowClass({ row, rowIndex }) {
-      return "background:#fafafa";
+      return 'background:#fafafa';
     }
   }
 };
