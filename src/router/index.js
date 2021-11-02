@@ -1,20 +1,20 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 // const originalPush = VueRouter.prototype.push
 // VueRouter.prototype.push = function push(location) {
 //   return originalPush.call(this, location).catch(err => err)
 // }
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 let routes = [
   {
     path: '/',
-    redirect: '/adaptive/course',
-    meta: {
-      title: 'ETS'
+    redirect:'/adaptive/course',
+    meta:{
+      title:'ETS'
     }
   }
-];
+]
 
 /**
  * require.context 实现流程自动化
@@ -24,11 +24,11 @@ let routes = [
  * @param { RegExp } regExp - 匹配文件的正则
  */
 const routerContext = require.context('../views', true, /_router\.js$/);
-routerContext.keys().forEach((route) => {
+routerContext.keys().forEach(route => {
   const routerModule = routerContext(route);
   /**
-   * 兼容 import export 和 require module.export 两种规范
-   */
+  * 兼容 import export 和 require module.export 两种规范
+  */
   routes = [...routes, ...(routerModule.default || routerModule)];
 });
 
@@ -36,6 +36,6 @@ const router = new VueRouter({
   mode: 'history',
   base: '/admin-ets/',
   routes
-});
+})
 
-export default router;
+export default router

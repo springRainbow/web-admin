@@ -14,7 +14,7 @@
           </div>
         </el-header>
         <el-container>
-          <el-aside class="main-aside" :style="{ width: isCollapse ? 'auto' : '241px' }">
+          <el-aside class="main-aside" :style="{ width:isCollapse ? 'auto' : '241px' }">
             <vue-scroll>
               <el-menu
                 class="main-menu"
@@ -24,9 +24,13 @@
                 :default-active="defaultActive"
                 router
               >
-                <el-menu-item v-for="(menu, index) in menuList" :index="menu.remark" :key="`menu${index}`">
+                <el-menu-item
+                  v-for="(menu,index) in menuList"
+                  :index="menu.remark"
+                  :key="`menu${index}`"
+                >
                   <template>
-                    <i :class="[menuIcon[index], { 'menu-icon': isCollapse }]"></i>
+                    <i :class="[menuIcon[index],{'menu-icon':isCollapse}]"></i>
                     <span slot="title">{{ menu.name }}</span>
                   </template>
                 </el-menu-item>
@@ -44,28 +48,34 @@
         </el-container>
       </el-container>
     </div>
+    
   </div>
 </template>
 <script>
-import api from '@/api';
-import { mapGetters, mapActions } from 'vuex';
+import api from "@/api";
+import { mapGetters, mapActions } from "vuex";
 export default {
-  name: 'app',
+  name: "app",
   data() {
     return {
       isCollapse: false, // 折叠导航
       menuList: [],
-      defaultActive: 'course',
+      defaultActive: "course",
       menuMap: {
-        unitConfig: 'course',
-        activityConfig: 'activity',
-        course: 'course',
-        activity: 'activity',
-        question: 'question',
-        media: 'media'
+        unitConfig: "course",
+        activityConfig: "activity",
+        course: "course",
+        activity: "activity",
+        question: "question",
+        media: "media"
       },
-      menuIcon: ['el-icon-reading', 'el-icon-collection', 'el-icon-document', 'el-icon-upload'],
-      etsBool: false //判断展示后台还是宣传页
+      menuIcon: [
+        "el-icon-reading",
+        "el-icon-collection",
+        "el-icon-document",
+        "el-icon-upload"
+      ],
+      etsBool: false, //判断展示后台还是宣传页
     };
   },
   watch: {
@@ -75,37 +85,37 @@ export default {
   },
   computed: {
     ...mapGetters({
-      userInfo: 'getUserInfo'
+      userInfo: "getUserInfo"
     })
   },
   created() {
-    setTimeout(() => {
-      if (this.$route.query.publicity_type == undefined) {
+    setTimeout(()=>{
+      if(this.$route.query.publicity_type == undefined){
         this.getMenu();
       }
-    }, 800);
+    },800)
     this.getUserInfo();
   },
   mounted() {
-    this.$bus.on('setScrollId', (data) => {
-      this.$refs['mainScroll'].scrollIntoView(`#${data.id}`, 500);
+    this.$bus.on("setScrollId", data => {
+      this.$refs["mainScroll"].scrollIntoView(`#${data.id}`, 500);
     });
-    window.sessionStorage.setItem('pid', this.userInfo.passport_id);
+    window.sessionStorage.setItem("pid",this.userInfo.passport_id)
     setTimeout(() => {
       this.isCollapse = true;
     }, 2000);
   },
   methods: {
     ...mapActions({
-      getUserInfo: 'GET_USER_INFO'
+      getUserInfo: "GET_USER_INFO"
     }),
     // 获取菜单
     getMenu() {
-      this.$http._get(api.getMenu).then((res) => {
+        this.$http._get(api.getMenu).then(res => {
         if (res.status == 200) {
           this.etsBool = true;
           Object.values(res.result.item).forEach((el, index) => {
-            if (el.remark == 'ets-learning') {
+            if (el.remark == "ets-learning") {
               this.menuList = el.sub;
             }
           });
@@ -121,11 +131,12 @@ export default {
       window.location.href = `${process.env.VUE_APP_PRFIEX}account.kmf.com/logout`;
     }
   },
-  components: {}
+  components:{
+  }
 };
 </script>
 <style>
-@import '~@/styles/css/reset.css';
+@import "~@/styles/css/reset.css";
 .el-aside {
   overflow: hidden;
 }

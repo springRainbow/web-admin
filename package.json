@@ -7,8 +7,7 @@
   "scripts": {
     "dev": "vue-cli-service serve --mode local",
     "test": "vue-cli-service build --mode development",
-    "online": "vue-cli-service build --mode production",
-    "prepare": "husky install"
+    "online": "vue-cli-service build --mode production"
   },
   "dependencies": {
     "core-js": "^3.4.3",
@@ -31,17 +30,10 @@
     "@vue/cli-plugin-vuex": "^4.1.0",
     "@vue/cli-service": "^4.1.0",
     "babel-plugin-component": "^1.1.1",
-    "husky": "^7.0.0",
-    "lint-staged": "^11.2.6",
     "node-sass": "^4.12.0",
-    "prettier": "2.4.1",
-    "pretty-quick": "^3.1.1",
     "sass-loader": "^8.0.0",
     "style-resources-loader": "^1.3.2",
     "vue-cli-plugin-element": "^1.0.1",
     "vue-template-compiler": "^2.6.10"
-  },
-  "lint-staged": {
-    "*.{js,css,md}": "prettier --write"
   }
 }
