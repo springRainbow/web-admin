@@ -1,20 +1,34 @@
 <template>
   <div id="app">
-    <div v-if="$route.query.publicity_type == 1 || $route.query.publicity_type == 2">
+    <div
+      v-if="
+        $route.query.publicity_type == 1 || $route.query.publicity_type == 2
+      "
+    >
       <router-view></router-view>
     </div>
     <div v-if="$route.query.publicity_type == undefined && etsBool">
       <el-container class="main">
-        <el-header v-if="$route.query.publicity_type == undefined && etsBool" class="main-header g-shadow">
+        <el-header
+          v-if="$route.query.publicity_type == undefined && etsBool"
+          class="main-header g-shadow"
+        >
           <img class="main-logo fl" src="./assets/logo.png" alt="logo" />
           <h3 class="fl">KMF·ETS Collaboration</h3>
           <div class="fr header-avatar">
             <span class="fl logout" @click="logout">Log out</span>
-            <el-avatar :size="40" :src="userInfo.pic_url" slot="reference"></el-avatar>
+            <el-avatar
+              :size="40"
+              :src="userInfo.pic_url"
+              slot="reference"
+            ></el-avatar>
           </div>
         </el-header>
         <el-container>
-          <el-aside class="main-aside" :style="{ width:isCollapse ? 'auto' : '241px' }">
+          <el-aside
+            class="main-aside"
+            :style="{ width: isCollapse ? 'auto' : '241px' }"
+          >
             <vue-scroll>
               <el-menu
                 class="main-menu"
@@ -25,18 +39,23 @@
                 router
               >
                 <el-menu-item
-                  v-for="(menu,index) in menuList"
+                  v-for="(menu, index) in menuList"
                   :index="menu.remark"
                   :key="`menu${index}`"
                 >
                   <template>
-                    <i :class="[menuIcon[index],{'menu-icon':isCollapse}]"></i>
+                    <i
+                      :class="[menuIcon[index], { 'menu-icon': isCollapse }]"
+                    ></i>
                     <span slot="title">{{ menu.name }}</span>
                   </template>
                 </el-menu-item>
               </el-menu>
               <div class="main-aside_close">
-                <i :class="isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'" @click="collapseMenu"></i>
+                <i
+                  :class="isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'"
+                  @click="collapseMenu"
+                ></i>
               </div>
             </vue-scroll>
           </el-aside>
@@ -48,7 +67,6 @@
         </el-container>
       </el-container>
     </div>
-    
   </div>
 </template>
 <script>
@@ -75,7 +93,7 @@ export default {
         "el-icon-document",
         "el-icon-upload"
       ],
-      etsBool: false, //判断展示后台还是宣传页
+      etsBool: false //判断展示后台还是宣传页
     };
   },
   watch: {
@@ -89,18 +107,18 @@ export default {
     })
   },
   created() {
-    setTimeout(()=>{
-      if(this.$route.query.publicity_type == undefined){
+    setTimeout(() => {
+      if (this.$route.query.publicity_type == undefined) {
         this.getMenu();
       }
-    },800)
+    }, 800);
     this.getUserInfo();
   },
   mounted() {
     this.$bus.on("setScrollId", data => {
       this.$refs["mainScroll"].scrollIntoView(`#${data.id}`, 500);
     });
-    window.sessionStorage.setItem("pid",this.userInfo.passport_id)
+    window.sessionStorage.setItem("pid", this.userInfo.passport_id);
     setTimeout(() => {
       this.isCollapse = true;
     }, 2000);
@@ -111,7 +129,7 @@ export default {
     }),
     // 获取菜单
     getMenu() {
-        this.$http._get(api.getMenu).then(res => {
+      this.$http._get(api.getMenu).then(res => {
         if (res.status == 200) {
           this.etsBool = true;
           Object.values(res.result.item).forEach((el, index) => {
@@ -131,8 +149,7 @@ export default {
       window.location.href = `${process.env.VUE_APP_PRFIEX}account.kmf.com/logout`;
     }
   },
-  components:{
-  }
+  components: {}
 };
 </script>
 <style>
