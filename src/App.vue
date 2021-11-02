@@ -15,14 +15,14 @@
         >
           <img class="main-logo fl" src="./assets/logo.png" alt="logo" />
   <h3 class="fl">KMF·ETS Collaboration</h3>
-  <div class="fr header-avatar">
-    <span class="fl logout" @click="logout">Log out</span>
-    <el-avatar
-      :size="40"
-      :src="userInfo.pic_url"
-      slot="reference"
-    ></el-avatar>
-  </div>
+    <div class="fr header-avatar">
+      <span class="fl logout" @click="logout">Log out</span>
+      <el-avatar
+        :size="40"
+        :src="userInfo.pic_url"
+        slot="reference"
+      ></el-avatar>
+    </div>
         </el-header>
         <el-container>
           <el-aside
